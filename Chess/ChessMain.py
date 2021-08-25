@@ -24,38 +24,41 @@ Main driver for code
 """
 def main():
     p.init()
-    screen = p.display.set_mode((WIDTH, HEIGHT))
-    clock = p.time.Clock()
-    screen.fill(p.Color("white"))
-    gs = ChessEngine.GameState()
+    screen = p.display.set_mode((WIDTH, HEIGHT)) #setting the area for the pygame screen
+    clock = p.time.Clock() #creating clock for runtime
+    screen.fill(p.Color("white")) #setting background for the screen
+    gs = ChessEngine.GameState() #making instance of the game state
     loadImages()
     running = True
     sqSelected = () #no square is selected initially, keeps track of user click
     playerClicks = [] #keeps track of player clicks
     while running:
-        for e in p.event.get():
+        for e in p.event.get(): #creating event watcher to check for closing
             if e.type == p.QUIT:
                 running = False
-            elif e.type == p.MOUSEBUTTONDOWN:
+            elif e.type == p.MOUSEBUTTONDOWN: #watching mouse button to get user input for game
                 location = p.mouse.get_pos() # get x and y pos of the mouse
-                col = location[0]//SQ_SIZE
-                row = location[1]//SQ_SIZE
+                col = location[0]//SQ_SIZE #getting the location of the mouse click x position within the board
+                row = location[1]//SQ_SIZE #getting location of mouse click y position
                 if sqSelected == (row, col): #check if user selected square twice
-                    sqSelected = ()
+                    sqSelected = () #deselct board position
                 else:
-                    sqSelected = (row, col)
-                    playerClicks.append(sqSelected)
-                if len(playerClicks) == 2:
-                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    print(move.getChessNotation())
-                    gs.makeMove(move)
-                    sqSelected = ()
-                    playerClicks = []
+                    sqSelected = (row, col) #set the selected board position
+                    playerClicks.append(sqSelected) #add the selection to the number of positions clicked
+                if len(playerClicks) == 2: #when player has selected starting and ending point
+                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board) #move piece from starting position to ending position
+                    print(move.getChessNotation()) #prints out chess notation for move
+                    gs.makeMove(move) #changes the board for the game state
+                    sqSelected = () #clears the selected position
+                    playerClicks = [] #clears the selected spots
 
-        drawGameState(screen, gs)
-        clock.tick(MAX_FPS)
+        drawGameState(screen, gs) #draws the board based on the 2d array
+        clock.tick(MAX_FPS) #running to update the display
         p.display.flip()
 
+"""
+function to draw the board based on the 2d array in its current state
+"""
 def drawGameState(screen, gs):
     drawBoard(screen)
     drawPieces(screen, gs.board)

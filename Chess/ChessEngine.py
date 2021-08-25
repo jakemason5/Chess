@@ -20,19 +20,21 @@ class GameState():
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]]
 
 
-        self.whiteToMove = True
-        self.moveLog = []
+        self.whiteToMove = True #Initializes first player
+        self.moveLog = [] #keeps track of moves made
 
+    #function to make a move
     def makeMove(self, move):
-        self.board[move.startRow][move.startCol] = "--"
-        self.board[move.endRow][move.endCol] = move.pieceMoved
-        self.moveLog.append(move)
-        self.whiteToMove = not self.whiteToMove #swap players
+        self.board[move.startRow][move.startCol] = "--" #replace original position of piece
+        self.board[move.endRow][move.endCol] = move.pieceMoved #set new postion to piece moved
+        self.moveLog.append(move) #add the move to the move log
+        self.whiteToMove = not self.whiteToMove #swap players turn
 
 class Move():
 
      #maps keys to values
      # key : value
+     #Can be used to show chess moves on the board eg f8 to e7
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4,
                     "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {v: k for k, v in ranksToRows.items()}
@@ -43,14 +45,17 @@ class Move():
 
 
     def __init__(self,startSq, endSq, board):
+        #designating parts of tuple for easier access later
         self.startRow = startSq[0]
         self.startCol = startSq[1]
         self.endRow = endSq[0]
         self.endCol = endSq[1]
+        #setting information for pieces moved and captured
         self.pieceMoved = board[self.startRow][self.startCol]
         self.pieceCaptured = board[self.endRow][self.endCol]
 
 
+    #These functions return the moves on the board in chess notation
     def getChessNotation(self):
         return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol)
 
