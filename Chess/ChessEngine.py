@@ -95,6 +95,9 @@ class GameState():
 
         return moves #not worrying about checks for now
 
+
+
+
     '''
     Determine if current player is in check
     '''
@@ -103,6 +106,7 @@ class GameState():
             return self.squareUnderAttack(self.whiteKingLocation[0], self.whiteKingLocation[1])
         else:
             return self.squareUnderAttack(self.blackKingLocation[0], self.blackKingLocation[1])
+
 
 
 
@@ -120,6 +124,7 @@ class GameState():
 
 
 
+
     '''
     Checks to make sure player move won't put their king into check
     '''
@@ -134,6 +139,10 @@ class GameState():
                     self.moveFunctions[piece](r, c, moves)
 
         return moves
+
+
+
+
 
     '''
     Get all of the pawn moves for the pawn located at row, col and add the moves to the list
@@ -164,6 +173,10 @@ class GameState():
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
 
+
+
+
+
     '''
     Get all of the rook moves for the rook located at row, col and add the moves to the list
     '''
@@ -188,6 +201,10 @@ class GameState():
                 else:
                     break
 
+
+
+
+
     '''
     Get all of the knight moves for the knight located at row, col and add the moves to the list
     '''
@@ -202,6 +219,10 @@ class GameState():
                 endPiece = self.board[endRow][endCol]
                 if endPiece[0] != allyColor:
                     moves.append(Move((r, c), (endRow, endCol), self.board))
+
+
+
+
 
     '''
     Get all of the bishop moves for the bishop located at row, col and add the moves to the list
@@ -225,6 +246,10 @@ class GameState():
                 else:
                     break
 
+
+
+
+
     '''
     Get all of the queen moves for the queen located at row, col and add the moves to the list
     '''
@@ -232,6 +257,10 @@ class GameState():
         #Queen has same moveset as rook and bishop combined
         self.getRookMoves(r, c, moves)
         self.getBishopMoves(r, c, moves)
+
+
+
+
 
 
     '''
@@ -251,6 +280,7 @@ class GameState():
 
 
 
+
 class Move():
 
      #maps keys to values
@@ -265,6 +295,7 @@ class Move():
 
 
 
+
     def __init__(self,startSq, endSq, board):
         #designating parts of tuple for easier access later
         self.startRow = startSq[0]
@@ -276,6 +307,7 @@ class Move():
         self.pieceCaptured = board[self.endRow][self.endCol]
         # gives each potential move on the board a custom id
         self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
+
 
 
 
