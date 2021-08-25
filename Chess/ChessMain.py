@@ -28,6 +28,42 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = ChessEngine.GameState()
-    print(gs.board)
+    loadImages()
+    running = True
 
-main()
+    while running:
+        for e in p.event.get():
+            if e.type == p.QUIT:
+                running = False
+
+        drawGameState(screen, gs)
+        clock.tick(MAX_FPS)
+        p.display.flip()
+
+def drawGameState(screen, gs):
+    drawBoard(screen)
+    drawPieces(screen, gs.board)
+
+"""
+Will draw the squares of the board
+"""
+def drawBoard(screen):
+    colors = [p.Color("white"), p.Color("dark gray")]
+    for r in range(DIMENSION):
+        for c in range(DIMENSION):
+            color = colors[((r+c) % 2)]
+            p.draw.rect(screen, color, p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
+"""
+Will Draw the pieces on the board using the game state
+"""
+def drawPieces(screen, board):
+    for r in range(DIMENSION):
+        for c in range(DIMENSION):
+            piece = board[r][c]
+            if piece != "--":
+                screen.blit(IMAGES[piece], p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
+
+if __name__ == "__main__":
+    main()
