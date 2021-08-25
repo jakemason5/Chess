@@ -28,10 +28,18 @@ def main():
     clock = p.time.Clock() #creating clock for runtime
     screen.fill(p.Color("white")) #setting background for the screen
     gs = ChessEngine.GameState() #making instance of the game state
+    validMoves = gs.getValidMoves()
+    moveMade = False #flag variable for when a move is made
+
+
+
     loadImages()
     running = True
     sqSelected = () #no square is selected initially, keeps track of user click
     playerClicks = [] #keeps track of player clicks
+
+
+
     while running:
         for e in p.event.get(): #creating event watcher to check for closing
             if e.type == p.QUIT:
@@ -49,7 +57,9 @@ def main():
                 if len(playerClicks) == 2: #when player has selected starting and ending point
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board) #move piece from starting position to ending position
                     print(move.getChessNotation()) #prints out chess notation for move
-                    gs.makeMove(move) #changes the board for the game state
+                    if move in validMoves:
+                        gs.makeMove(move) #changes the board for the game state
+                        moveMade = True
                     sqSelected = () #clears the selected position
                     playerClicks = [] #clears the selected spots
 
@@ -57,6 +67,11 @@ def main():
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:
                     gs.undoMove()
+                    moveMade = True
+
+        if moveMade:
+            validMoves = gs.getValidMoves()
+            moveMade = False
 
         drawGameState(screen, gs) #draws the board based on the 2d array
         clock.tick(MAX_FPS) #running to update the display
