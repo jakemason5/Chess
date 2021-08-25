@@ -36,6 +36,7 @@ def main():
         for e in p.event.get(): #creating event watcher to check for closing
             if e.type == p.QUIT:
                 running = False
+            #mouse handler
             elif e.type == p.MOUSEBUTTONDOWN: #watching mouse button to get user input for game
                 location = p.mouse.get_pos() # get x and y pos of the mouse
                 col = location[0]//SQ_SIZE #getting the location of the mouse click x position within the board
@@ -51,6 +52,11 @@ def main():
                     gs.makeMove(move) #changes the board for the game state
                     sqSelected = () #clears the selected position
                     playerClicks = [] #clears the selected spots
+
+            #key handler
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:
+                    gs.undoMove()
 
         drawGameState(screen, gs) #draws the board based on the 2d array
         clock.tick(MAX_FPS) #running to update the display

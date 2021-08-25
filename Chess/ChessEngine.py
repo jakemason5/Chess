@@ -23,12 +23,25 @@ class GameState():
         self.whiteToMove = True #Initializes first player
         self.moveLog = [] #keeps track of moves made
 
-    #function to make a move
+    '''
+    Takes a move and executes it, will not work for castling, pawn promotion or en-passant
+    '''
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = "--" #replace original position of piece
         self.board[move.endRow][move.endCol] = move.pieceMoved #set new postion to piece moved
         self.moveLog.append(move) #add the move to the move log
         self.whiteToMove = not self.whiteToMove #swap players turn
+
+
+    '''
+    Undo the last move of the game
+    '''
+    def undoMove(self):
+        if len(self.moveLog) != 0:
+            move = self.moveLog.pop() #remove move from move log
+            self.board[move.startRow][move.startCol] = move.pieceMoved #replace moved piece
+            self.board[move.endRow][move.endCol] = move.pieceCaptured #replace captured space
+            self.whiteToMove = not self.whiteToMove  # swap players turn
 
 class Move():
 
